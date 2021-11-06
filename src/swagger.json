@@ -1,0 +1,220 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Delicious - API de receita",
+    "description": "Esta api tem como objetivo ser consumida pela parte do front end",
+    "contact": {
+      "email": "douglasfelipe.net77@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "API de deploy"
+    }
+  ],
+  "paths": {
+    "/users/register": {
+      "post": {
+        "summary": "Cadastro de usuário",
+        "description": "Essa rota será responsável por cadastrar um novo usuário",
+        "tags": ["User"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "User": {
+                  "value": {
+                    "username": "Douglas",
+                    "email": "douglas@gmail.com",
+                    "password": "3423r423"
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "201": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Users": {
+                    "value": {
+                      "username": "Douglas",
+                      "email": "douglasfelipe.net77@gmail.com",
+                      "_id": "6186cbdf4de741acc73689d7"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Caso aconteça algum erro ao criar a conta",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Users": {
+                    "value": {
+                      "message": "Error ao criar a conta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "summary": "Login de usuário",
+        "description": "Essa rota será responsável por fazer o login do usuário",
+        "tags": ["User"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              },
+              "examples": {
+                "User": {
+                  "value": {
+                    "email": "douglas@gmail.com",
+                    "password": "3423r423"
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Users": {
+                    "value": {
+                      "_id": "6186c124dc14f5f8faf5e57d",
+                      "username": "Douglas",
+                      "email": "douglasfelipe.net77@gmail.com",
+                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRvdWdsYXNmZWxpcGUyLm5ldDc3QGdtYWlsLmNvbSIsImlhdCI6MTYzNjIyNTQxOCwiZXhwIjoxNjM3MDg5NDE4fQ.bsi9nGCE04FLWQqIZa5MNpNFdUYLYG8hq5mxgKiMqRI"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Email ou senha incorretos",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Email errado": {
+                    "value": {
+                      "error": "Email incorreto"
+                    }
+                  },
+                  "Senha errada": {
+                    "value": {
+                      "error": "Senha incorreta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/reset_password": {
+      "post": {
+        "summary": "Recuperação de senha do usuário",
+        "description": "Essa rota será responsável por enviar um email para o usuário com uma nova senha gerada",
+        "tags": ["User"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "User": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "User": {
+                  "value": {
+                    "email": "douglas@gmail.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Users": {
+                    "value": {
+                      "message": "Sua senha foi alterada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Email não encontrado",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Email": {
+                    "value": {
+                      "message": "Email não encontrado"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

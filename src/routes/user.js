@@ -10,6 +10,8 @@ const passwordReset = require("../utils/passwordReset");
 
 //Register User
 
+//router.put("/")
+
 router.post("/register", async (req, res) => {
   const newUser = new User({
     username: req.body.username,
@@ -20,9 +22,10 @@ router.post("/register", async (req, res) => {
   try {
     const savedUser = await newUser.save();
     const { password, ...others } = savedUser._doc;
-    res.status(201).json({ others });
+    const { email, username, _id } = others;
+    res.status(201).json({ email, username, _id });
   } catch (e) {
-    res.status(500).json({ message: "Error ao criar a conta" });
+    res.status(500).json({ message: "Erro ao cria a conta" });
   }
 });
 
@@ -33,22 +36,23 @@ router.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      res.status(401).json({ error: "Email incorrect" });
+      res.status(401).json({ error: "Email incorreto" });
     } else {
       user.isCorrectPassword(password, function (err, same) {
         if (!same) {
-          res.status(401).json({ error: "Password incorrect" });
+          res.status(401).json({ error: "Senha incorreta" });
         } else {
           const token = jwt.sign({ email }, secret, {
             expiresIn: "10d",
           });
           const { password, ...others } = user._doc;
-          res.json({ user: others, token: token });
+          const { _id, username, email: _email } = others;
+          res.json({ _id, username, _email, token: token });
         }
       });
     }
   } catch (e) {
-    res.status(500).json({ message: "Error" });
+    res.status(500).json({ message: "Error ao criar a conta" });
   }
 });
 
@@ -63,14 +67,14 @@ router.post("/reset_password", async (req, res) => {
         { email: email },
         { password: generatePassword }
       );
-      await passwordReset(user.email, newPassword)
+      await passwordReset(user.email, newPassword);
       return res.status(200).json({ message: "Sua senha foi alterada" });
     } else {
-      return res.status(400).json({ Message: "Email não encontrado" });
+      return res.status(404).json({ Message: "Email não encontrado" });
     }
   } catch (e) {
     console.log(e);
-    res.status(400).json("Email não encontrado");
+    res.status(404).json("Email não encontrado");
   }
 });
 
