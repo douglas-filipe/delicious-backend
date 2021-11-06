@@ -40,7 +40,9 @@ const DisableTryItOutPlugin = function () {
       plugins: [DisableTryItOutPlugin],
     },
   };
-  
+app.get("/", (req, res) => {
+  res.send("Está funcionando")
+})
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs, options));  
 app.use("/users", User)
 app.use("/recipe", Recipe)
