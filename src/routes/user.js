@@ -4,7 +4,9 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const secret = process.env.JWT_SEC;
-const nodemailer = require("nodemailer")
+
+const bcrypt = require("bcrypt");
+const passwordReset = require("../utils/passwordReset");
 
 //Register User
 
@@ -50,35 +52,26 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.post("/send-email", (req, res) => {
-  const remetente = nodemailer.createTransport({
-    host:"smtp.gmail.com",
-    service: "gmail",
-    port: 587,
-    secure: true,
-    auth: {
-      user: process.env.email,
-      pass: process.env.password
-    }
-  })
-
-  const emailASerEnviado = {
-    from: "felipecolares333@gmail.com",
-    to: "douglasfelipe.net77@gmail.com",
-    subject: "Enviado email com Node.js",
-    text: "Ola"
-  }
-  remetente.sendMail(emailASerEnviado, function(error, info){
-    if (error) {
-      console.log(error);
+router.post("/reset_password", async (req, res) => {
+  const { email } = req.body;
+  const newPassword = Math.random().toString(36).slice(-10);
+  try {
+    user = await User.findOne({ email });
+    if (user) {
+      const generatePassword = await bcrypt.hash(newPassword, 10);
+      await User.findOneAndUpdate(
+        { email: email },
+        { password: generatePassword }
+      );
+      await passwordReset(user.email, newPassword)
+      return res.status(200).json({ message: "Sua senha foi alterada" });
     } else {
-      console.log('Email sent: ' + info.response);
-      return res.json("Enviado")
+      return res.status(400).json({ Message: "Email não encontrado" });
     }
-  });  
-
-})
-
-
+  } catch (e) {
+    console.log(e);
+    res.status(400).json("Email não encontrado");
+  }
+});
 
 module.exports = router;

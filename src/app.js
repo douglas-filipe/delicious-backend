@@ -3,6 +3,7 @@ const cors = require('cors')
 const dotenv = require('dotenv')
 const User = require('./routes/user')
 const Recipe = require("./routes/recipe")
+const Comment = require("./routes/comment")
 
 require('./config/database') 
 
@@ -14,8 +15,9 @@ app.use(express.json())
 dotenv.config()
 
 app.use("/users", User)
-
 app.use("/recipe", Recipe)
+app.use("/comment", Comment)
+
 app.use("/uploads", express.static('uploads'))
 
 app.listen(process.env.PORT || 3001, () => {
