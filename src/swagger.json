@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3000",
+      "url": "https://delicious-api.herokuapp.com",
       "description": "API de deploy"
     }
   ],
@@ -188,6 +188,80 @@
                   "Email": {
                     "value": {
                       "message": "Email não encontrado"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipe": {
+      "get": {
+        "summary": "Listar todas as receitas",
+        "description": "Essa rota será responsável por listar todas as receitas",
+        "tags": ["Recipe"],
+
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Recipe": {
+                    "value": {
+                      "_id": "618708b5df44bd40f0864546",
+                      "title": "Coxinha",
+                      "description": "dzfsfd",
+                      "img": "uploads/images/1636239537951-49-491394_png-file-svg-alarm-clock-icon-png-clipart.png",
+                      "category": "salgados",
+                      "level": "sdfsdf",
+                      "preparation": "Lorem ipsum sit amet",
+                      "ingredients": "1 colher de açucar",
+                      "time": "xfg",
+                      "author": {
+                        "_id": "6187055c3662ecc4553fd8a7",
+                        "username": "felipe"
+                      },
+                      "createdAt": "2021-11-06T22:59:01.927Z",
+                      "updatedAt": "2021-11-06T22:59:01.927Z",
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Criar receita",
+        "description": "Essa rota será responsável por criar receitas",
+        "tags": ["Recipe"],
+
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Recipe": {
+                    "value": {
+                      "_id": "618708b5df44bd40f0864546",
+                      "title": "Coxinha",
+                      "description": "dzfsfd",
+                      "img": "uploads/images/1636239537951-49-491394_png-file-svg-alarm-clock-icon-png-clipart.png",
+                      "category": "salgados",
+                      "level": "sdfsdf",
+                      "preparation": "Lorem ipsum sit amet",
+                      "ingredients": "1 colher de açucar",
+                      "time": "xfg",
+                      "author": {
+                        "_id": "6187055c3662ecc4553fd8a7",
+                        "username": "felipe"
+                      },
+                      "createdAt": "2021-11-06T22:59:01.927Z",
+                      "updatedAt": "2021-11-06T22:59:01.927Z",
+                      "__v": 0
                     }
                   }
                 }
