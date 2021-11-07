@@ -78,4 +78,8 @@ router.post("/reset_password", async (req, res) => {
   }
 });
 
+router.get("/teste", (req, res) => {
+  res.json("Resposta ok")
+})
+
 module.exports = router;
