@@ -19,5 +19,3 @@ module.exports = {
     appId: APP_ID,
   },
 };
-
-module.exports.port = 3000;
