@@ -5,6 +5,7 @@ const multer = require("../middlewares/uploadFotos");
 const verifyToken = require("../middlewares/verifyToken");
 const fs = require("fs");
 
+//Feito
 router.get("/", async (req, res) => {
   try {
     const recipe = await Recipe.find()
@@ -17,6 +18,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+//Feito
 //Search one recipe
 router.get("/:id", async (req, res) => {
   try {
@@ -30,9 +32,10 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+//Feito
 //Search By Category
-router.get("/category/:id", async (req, res) => {
-  const category = req.params.id;
+router.get("/category/:name_category", async (req, res) => {
+  const category = req.params.name_category;
   try {
     const recipe = await Recipe.find({ category: category });
     res.status(200).json(recipe);
@@ -53,6 +56,7 @@ router.get("/search", async (req, res) => {
   }
 });
 
+//Feito
 router.get("/user/:id", async (req, res) => {
   const userId = req.params.id;
   try {
@@ -65,7 +69,7 @@ router.get("/user/:id", async (req, res) => {
   }
 });
 
-
+//Feito
 router.post("/", multer.single("img"), verifyToken, async (req, res) => {
   const { title, description, category, level, preparation, ingredients, time } = req.body;
   try {
@@ -88,6 +92,7 @@ router.post("/", multer.single("img"), verifyToken, async (req, res) => {
   }
 });
 
+//feito
 //Update
 router.put("/:id", multer.single("img"), verifyToken, async (req, res) => {
   try {
@@ -106,6 +111,7 @@ router.put("/:id", multer.single("img"), verifyToken, async (req, res) => {
   }
 });
 
+//feito
 //Delete
 router.delete("/:id", verifyToken, async (req, res) => {
   try{

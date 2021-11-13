@@ -4,6 +4,7 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const secret = process.env.JWT_SEC;
+const verifyToken = require("../middlewares/verifyToken");
 
 const bcrypt = require("bcrypt");
 const passwordReset = require("../utils/passwordReset");
@@ -56,6 +57,17 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/:id", verifyToken, async (req, res) => {
+  const id = req.params.id
+  try {
+    const user = await User.findById({ _id: id })
+    const { _id, username, email, createdAt } = user
+    res.status(200).json({ _id, username, email, createdAt })
+  } catch {
+    res.status(404).json({ "message": "Usuário não encontrado" })
+  }
+})
+
 router.post("/reset_password", async (req, res) => {
   const { email } = req.body;
   const newPassword = Math.random().toString(36).slice(-10);
@@ -78,8 +90,30 @@ router.post("/reset_password", async (req, res) => {
   }
 });
 
-router.get("/teste", (req, res) => {
-  res.json("Resposta ok")
+
+router.put("/:id", verifyToken, async (req, res) => {
+  try {
+    const { password } = req.body
+    const generatePassword = await bcrypt.hash(password, 10);
+    await User.findByIdAndUpdate(
+      req.params.id,
+      { email: req.body.email, username: req.body.username, password: generatePassword },
+      { new: true }
+    )
+    return res.status(200).json({ "message": "Seus dados foram alterados" })
+  } catch {
+    return res.status(404).json({ "message": "Usuário inválido" })
+  }
+})
+
+router.delete("/:id", verifyToken, async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id)
+    if (!user) return res.status(404).json({ "message": "Usuário não existe" })
+    return res.status(200).json({ "message": "Sua conta foi apagada" })
+  } catch {
+    return res.status(500).json({ "message": "Erro ao apagar conta" })
+  }
 })
 
 module.exports = router;

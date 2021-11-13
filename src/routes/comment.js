@@ -3,6 +3,7 @@ const router = express.Router();
 const verifyToken = require("../middlewares/verifyToken");
 const Comment = require("../models/Comment");
 
+//Mostrar comentários por receita
 router.get("/:id", async (req, res) => {
   try {
     const comment = await Comment.find({recipeId: req.params.id})
@@ -15,6 +16,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+//Criar
 router.post("/", verifyToken, async (req, res) => {
   const { recipeId, description } = req.body;
   try {
@@ -26,6 +28,7 @@ router.post("/", verifyToken, async (req, res) => {
   }
 });
 
+//Atualizar
 router.put("/:id", verifyToken, async (req, res) => {
   try {
     const updateComment = await Comment.findByIdAndUpdate(
@@ -41,7 +44,7 @@ router.put("/:id", verifyToken, async (req, res) => {
   }
 });
 
-//Delete
+//Deletar
 router.delete("/:id", verifyToken, async (req, res) => {
   try {
     commentDelete = await Comment.findByIdAndDelete(req.params.id);

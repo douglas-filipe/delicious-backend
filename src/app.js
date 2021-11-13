@@ -6,10 +6,10 @@ const Recipe = require("./routes/recipe")
 const Comment = require("./routes/comment")
 const swaggerDocs = require("./swagger.json")
 const swaggerUi = require('swagger-ui-express')
-const mongoose = require('mongoose')
+//const mongoose = require('mongoose')
 
 const app = express()
-
+/*
 mongoose.connect(process.env.MONGO)
   .then(()=>{
     console.log("DB running")
@@ -17,6 +17,9 @@ mongoose.connect(process.env.MONGO)
   .catch((e)=>{
     console.log(e)
   })
+*/
+
+require("./config/database")
 
 app.use(cors())
 app.use(express.json())
@@ -40,6 +43,7 @@ const DisableTryItOutPlugin = function () {
       plugins: [DisableTryItOutPlugin],
     },
   };
+
 app.get("/", (req, res) => {
   res.send("Está funcionando")
 })

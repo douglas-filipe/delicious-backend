@@ -24,7 +24,20 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "User": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string"
+                    },
+                    "username": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    }
+                  }
+                }
               },
               "examples": {
                 "User": {
@@ -82,7 +95,15 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "User": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string"
+                    },
+                    "password": "string"
+                  }
+                }
               },
               "examples": {
                 "User": {
@@ -129,6 +150,73 @@
                       "error": "Senha incorreta"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/id": {
+      "get": {
+        "summary": "Mostrar informações do usuário",
+        "description": "Essa rota será responsável por mostrar as informações do usuário logado",
+        "tags": ["User"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "Recipe": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "axios-request": {
+                  "value": {
+                      "request front": "Bearer token"
+                  }
+                }
+              }
+            }
+          }
+        },
+      
+
+
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Users": {
+                    "value": {
+                      "_id": "618fc2a1981e3213176b8dc4",
+                      "username": "Douglas",
+                      "email": "douglasfelipe",
+                      "createdAt": "2021-11-13T13:50:25.693Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Usuário não encontrado": {
+                    "value": {
+                      "message": "Usuário não encontrado" 
+                    }
+                  }
+                 
                 }
               }
             }
@@ -238,7 +326,97 @@
         "summary": "Criar receita",
         "description": "Essa rota será responsável por criar receitas",
         "tags": ["Recipe"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "Recipe": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "img": {
+                      "type": "file"
+                    },
+                    "category": {
+                      "type": "string"
+                    },
+                    "level": {
+                      "type": "string"
+                    },
+                    "preparation": {
+                      "type": "string"
+                    },
+                    "ingredients": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Recipe": {
+                  "value": {
+                    "title": "Torta de banana",
+                    "img": "file",
+                    "category": "tortas",
+                    "level": "Fácil",
+                    "preparation": "Misture o leite consensado com o creme de leite, depois acrescente as bananas",
+                    "ingredients": "1 caixa de creme de leite; 1 lata de leite condensado, 5 bananas maduras",
+                    "time": "1 hora"
+                  }
+                },
+                "axios-request": {
+                  "value": {
+                      "request front": "Bearer token"
+                  }
+                }
+              }
+            }
+          }
+        },
 
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Recipe": {
+                    "value": {
+                      "_id": "618708b5df44bd40f0864546",
+                      "title": "Coxinha",
+                      "description": "dzfsfd",
+                      "img": "uploads/images/1636239537951-49-491394_png-file-svg-alarm-clock-icon-png-clipart.png",
+                      "category": "salgados",
+                      "level": "sdfsdf",
+                      "preparation": "Lorem ipsum sit amet",
+                      "ingredients": "1 colher de açucar",
+                      "time": "xfg",
+                      "author": {
+                        "_id": "6187055c3662ecc4553fd8a7",
+                        "username": "felipe"
+                      },
+                      "createdAt": "2021-11-06T22:59:01.927Z",
+                      "updatedAt": "2021-11-06T22:59:01.927Z",
+                      "__v": 0,
+                      "likes": []
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipe/id": {
+      "get": {
+        "summary": "Mostrar receita por ID",
+        "description": "Essa rota será responsável por mostrar uma receita por ID",
+        "tags": ["Recipe"],
         "responses": {
           "200": {
             "content": {
@@ -269,23 +447,225 @@
             }
           }
         }
-      }
-    }
-  },
+      },
+      "put": {
+        "summary": "Atualizar receita",
+        "description": "Essa rota será responsável atualizar alguma receita",
+        "tags": ["Recipe"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "Recipe": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "img": {
+                      "type": "file"
+                    },
+                    "category": {
+                      "type": "string"
+                    },
+                    "level": {
+                      "type": "string"
+                    },
+                    "preparation": {
+                      "type": "string"
+                    },
+                    "ingredients": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Recipe": {
+                  "value": {
+                    "title": "Torta de banana",
+                    "img": "file",
+                    "category": "tortas",
+                    "level": "Fácil",
+                    "preparation": "Misture o leite consensado com o creme de leite, depois acrescente as bananas",
+                    "ingredients": "1 caixa de creme de leite; 1 lata de leite condensado, 5 bananas maduras",
+                    "time": "1 hora"
+                  }
+                },
+                "axios-request": {
+                  "value": {
+                      "request front": "Bearer token"
+                  }
+                }
+              }
+            }
+          }
+        },
 
-  "components": {
-    "schemas": {
-      "User": {
-        "type": "object",
-        "properties": {
-          "username": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Recipe": {
+                    "value": {
+                      "_id": "618708b5df44bd40f0864546",
+                      "title": "Coxinha",
+                      "description": "dzfsfd",
+                      "img": "uploads/images/1636239537951-49-491394_png-file-svg-alarm-clock-icon-png-clipart.png",
+                      "category": "salgados",
+                      "level": "sdfsdf",
+                      "preparation": "Lorem ipsum sit amet",
+                      "ingredients": "1 colher de açucar",
+                      "time": "xfg",
+                      "author": {
+                        "_id": "6187055c3662ecc4553fd8a7",
+                        "username": "felipe"
+                      },
+                      "createdAt": "2021-11-06T22:59:01.927Z",
+                      "updatedAt": "2021-11-06T22:59:01.927Z",
+                      "__v": 0,
+                      "likes": []
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletar receita",
+        "description": "Essa rota será responsável por deletar alguma receita",
+        "tags": ["Recipe"],
+
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Recipe": {
+                    "value": {
+                      "message": "Deletado com sucesso!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipe/category/name_category": {
+      "get": {
+        "summary": "Mostrar receita por categoria",
+        "description": "Essa rota será responsável por mostrar as receitas de acordo com a categoria",
+        "tags": ["Recipe"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Recipe": {
+                    "value": {
+                      "_id": "618708b5df44bd40f0864546",
+                      "title": "Coxinha",
+                      "description": "dzfsfd",
+                      "img": "uploads/images/1636239537951-49-491394_png-file-svg-alarm-clock-icon-png-clipart.png",
+                      "category": "name_category",
+                      "level": "sdfsdf",
+                      "preparation": "Lorem ipsum sit amet",
+                      "ingredients": "1 colher de açucar",
+                      "time": "xfg",
+                      "author": {
+                        "_id": "6187055c3662ecc4553fd8a7",
+                        "username": "felipe"
+                      },
+                      "createdAt": "2021-11-06T22:59:01.927Z",
+                      "updatedAt": "2021-11-06T22:59:01.927Z",
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipe/user/id": {
+      "get": {
+        "summary": "Mostrar receita por ID de usuário",
+        "description": "Essa rota será responsável por listar as receitas de um determinado usuário",
+        "tags": ["Recipe"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Recipe": {
+                    "value": {
+                      "_id": "618708b5df44bd40f0864546",
+                      "title": "Coxinha",
+                      "description": "dzfsfd",
+                      "img": "uploads/images/1636239537951-49-491394_png-file-svg-alarm-clock-icon-png-clipart.png",
+                      "category": "name_category",
+                      "level": "sdfsdf",
+                      "preparation": "Lorem ipsum sit amet",
+                      "ingredients": "1 colher de açucar",
+                      "time": "xfg",
+                      "author": {
+                        "_id": "6187055c3662ecc4553fd8a7",
+                        "username": "felipe"
+                      },
+                      "createdAt": "2021-11-06T22:59:01.927Z",
+                      "updatedAt": "2021-11-06T22:59:01.927Z",
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipe/search?title=Coxinha": {
+      "get": {
+        "summary": "Pesquisar alguma receita",
+        "description": "Essa rota será responsável por pesquisar receitas por nomes",
+        "tags": ["Recipe"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Recipe": {
+                    "value": {
+                      "_id": "618708b5df44bd40f0864546",
+                      "title": "Coxinha",
+                      "description": "dzfsfd",
+                      "img": "uploads/images/1636239537951-49-491394_png-file-svg-alarm-clock-icon-png-clipart.png",
+                      "category": "name_category",
+                      "level": "sdfsdf",
+                      "preparation": "Lorem ipsum sit amet",
+                      "ingredients": "1 colher de açucar",
+                      "time": "xfg",
+                      "author": {
+                        "_id": "6187055c3662ecc4553fd8a7",
+                        "username": "felipe"
+                      },
+                      "createdAt": "2021-11-06T22:59:01.927Z",
+                      "updatedAt": "2021-11-06T22:59:01.927Z",
+                      "__v": 0
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
