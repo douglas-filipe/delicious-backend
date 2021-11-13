@@ -15,6 +15,10 @@ const recipeSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    likes: {
+      type: Array,
+      default: []
+    }
   },
   { timestamps: true }
 );
