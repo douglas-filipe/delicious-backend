@@ -17,10 +17,10 @@ const addImage = async (req, res) => {
     const imageRef = storage.child(fileName);
     const snapshot = await imageRef.put(file.buffer);
     const downloadURL = await snapshot.ref.getDownloadURL();
-    res.status(201).send({ url: downloadURL });
+    return downloadURL
   } catch (err) {
     console.log(err);
-    res.status(400).send({ error: "Check file format or size" });
+    return { error: "Check file format or size" }
   }
 };
 

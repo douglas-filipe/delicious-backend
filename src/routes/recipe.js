@@ -25,7 +25,7 @@ router.get("/first", async (req, res) => {
       .populate("_id")
       .sort({ createdAt: -1 })
       .limit(3)
-    res.status(200).json({data: recipe});
+    res.status(200).json({ data: recipe });
   } catch (e) {
     res.status(500).json({ error: "Not found" });
   }
@@ -83,7 +83,8 @@ router.get("/user/:id", async (req, res) => {
 });
 
 //Feito
-router.post("/", multer.single("img"), verifyToken, async (req, res) => {
+router.post("/", verifyToken, multer.single("img"), async (req, res) => {
+
   const { title, description, category, level, preparation, ingredients, time } = req.body;
   try {
     const recipe = new Recipe({
@@ -157,13 +158,13 @@ router.put("/:id/like", verifyToken, async (req, res) => {
 
 //Feito
 //Receitas favoritas
-router.get("/favorites/:id", verifyToken, async(req, res) => {
-  try{
-    const favoritesRecipes = await Recipe.find({likes: req.params.id})
+router.get("/favorites/:id", verifyToken, async (req, res) => {
+  try {
+    const favoritesRecipes = await Recipe.find({ likes: req.params.id })
       .populate("author", "username")
       .populate("_id")
     res.status(200).json(favoritesRecipes)
-  }catch{
+  } catch {
     res.status(400).json({ "message": "Erro ao listar favoritos" })
   }
 })
