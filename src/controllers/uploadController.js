@@ -20,7 +20,7 @@ const addImage = async (req, res) => {
     res.status(201).send({ url: downloadURL });
   } catch (err) {
     console.log(err);
-    res.status(400).send(err.message);
+    res.status(400).send({ error: "Check file format or size" });
   }
 };
 
