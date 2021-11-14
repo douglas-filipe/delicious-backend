@@ -18,6 +18,19 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/first", async (req, res) => {
+  try {
+    const recipe = await Recipe.find()
+      .populate("author", "username")
+      .populate("_id")
+      .sort({ createdAt: -1 })
+      .limit(3)
+    res.status(200).json({data: recipe});
+  } catch (e) {
+    res.status(500).json({ error: "Not found" });
+  }
+});
+
 //Feito
 //Search one recipe
 router.get("/:id", async (req, res) => {
@@ -25,7 +38,6 @@ router.get("/:id", async (req, res) => {
     const recipe = await Recipe.findById({ _id: req.params.id })
       .populate("author", "username")
       .populate("_id")
-      .sort({ createdAt: -1 });
     res.status(200).json(recipe);
   } catch (e) {
     res.status(500).json({ error: "Not found" });
@@ -44,6 +56,7 @@ router.get("/category/:name_category", async (req, res) => {
   }
 });
 
+//Feito
 router.get("/search", async (req, res) => {
   const query = req.query.title;
   try {
@@ -125,6 +138,7 @@ router.delete("/:id", verifyToken, async (req, res) => {
   }
 });
 
+//Feito
 //Like / Deslike
 router.put("/:id/like", verifyToken, async (req, res) => {
   try {
@@ -141,10 +155,13 @@ router.put("/:id/like", verifyToken, async (req, res) => {
   }
 })
 
+//Feito
 //Receitas favoritas
 router.get("/favorites/:id", verifyToken, async(req, res) => {
   try{
     const favoritesRecipes = await Recipe.find({likes: req.params.id})
+      .populate("author", "username")
+      .populate("_id")
     res.status(200).json(favoritesRecipes)
   }catch{
     res.status(400).json({ "message": "Erro ao listar favoritos" })

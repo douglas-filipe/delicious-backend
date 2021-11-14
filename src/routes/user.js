@@ -62,7 +62,7 @@ router.get("/:id", verifyToken, async (req, res) => {
   try {
     const user = await User.findById({ _id: id })
     const { _id, username, email, createdAt } = user
-    res.status(200).json({ _id, username, email, createdAt })
+    res.status(200).json({_id, username, email, createdAt})
   } catch {
     res.status(404).json({ "message": "Usuário não encontrado" })
   }

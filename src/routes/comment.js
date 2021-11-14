@@ -3,6 +3,7 @@ const router = express.Router();
 const verifyToken = require("../middlewares/verifyToken");
 const Comment = require("../models/Comment");
 
+
 //Mostrar comentários por receita
 router.get("/:id", async (req, res) => {
   try {
@@ -10,7 +11,7 @@ router.get("/:id", async (req, res) => {
       .populate("author", "username")
       .populate("_id")
       .sort({ createdAt: -1 });
-    res.status(200).json(comment);
+    res.status(200).json({data: comment});
   } catch (e) {
     res.status(500).json({ error: "Not found" });
   }
