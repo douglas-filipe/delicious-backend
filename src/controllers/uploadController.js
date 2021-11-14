@@ -17,8 +17,7 @@ const addImage = async (req, res) => {
     const imageRef = storage.child(fileName);
     const snapshot = await imageRef.put(file.buffer);
     const downloadURL = await snapshot.ref.getDownloadURL();
-    res.status(201).json({ url: downloadURL });
-    //res.send(downloadURL);
+    res.status(201).send({ url: downloadURL });
   } catch (err) {
     console.log(err);
     res.status(400).send(err.message);
