@@ -1,14 +1,9 @@
 const multer = require("multer");
 module.exports = multer({
-  storage: multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, './uploads/images')
-    },
-
-    filename: (req, file, cb) => {
-      cb(null, `${Date.now()}-${file.originalname}`)
-    }
-  }),
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 2 * 1024 * 1024,
+  },
   fileFilter: (req, file, cb) => {
     const isAccepted = ['image/png', 'image/jpg', 'image/jpeg'].find(formatoAceito => formatoAceito == file.mimetype);
     if (isAccepted) {
