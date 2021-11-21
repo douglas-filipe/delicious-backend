@@ -1,9 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const Recipe = require("../models/Recipe");
-const multer = require("../middlewares/uploadFotos");
 const verifyToken = require("../middlewares/verifyToken");
 const fs = require("fs");
+const multer = require("multer")
+const firebase = require("../firebaseApp")
+require("firebase/compat/storage");
+const storage = firebase.storage().ref();
+global.XMLHttpRequest = require("xhr2");
+
+
+const upload = multer({
+  storage: multer.memoryStorage()
+})
 
 //Feito
 router.get("/", async (req, res) => {
@@ -82,33 +91,45 @@ router.get("/user/:id", async (req, res) => {
   }
 });
 
-//Feito
-router.post("/", verifyToken, multer.single("img"), async (req, res) => {
+//Feito multer.single("img")
+router.post("/", verifyToken, upload.single('img'),async (req, res) => {
+  
+    const file = req.file;
 
-  const { title, description, category, level, preparation, ingredients, time } = req.body;
-  try {
-    const recipe = new Recipe({
-      title,
-      description,
-      img: req.file.path,
-      category,
-      level,
-      author: req.user._id,
-      preparation,
-      ingredients,
-      time
-    });
-    await recipe.save();
-    return res.status(201).json({ recipe });
-  } catch (e) {
-    fs.unlink(req.file.path, () => { })
-    return res.status(400).json({ message: "Erro" });
-  }
+    const timestamp = Date.now();
+    const name = file.originalname.split(".")[0];
+    const type = file.originalname.split(".")[1];
+    const fileName = `${name}_${timestamp}.${type}`;
+
+    const imageRef = storage.child(fileName);
+    const snapshot = await imageRef.put(file.buffer);
+    const downloadURL = await snapshot.ref.getDownloadURL();
+
+    const { title, description, category, level, preparation, ingredients, time } = req.body;
+    try {
+      const recipe = new Recipe({
+        title,
+        description,
+        img: downloadURL,
+        category,
+        level,
+        author: req.user._id,
+        preparation,
+        ingredients,
+        time
+      });
+      await recipe.save();
+      return res.status(201).json({ recipe });
+    } catch (e) {
+      fs.unlink(req.file.path, () => { })
+      return res.status(400).json({ message: "Erro" });
+    }
 });
 
 //feito
 //Update
-router.put("/:id", multer.single("img"), verifyToken, async (req, res) => {
+//, multer.single("img")
+router.put("/:id", verifyToken, async (req, res) => {
   try {
     const updateRecipe = await Recipe.findByIdAndUpdate(
       req.params.id,
