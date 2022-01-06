@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const User = require("./routes/user");
-const uploadImage = require("./routes/upload");
 const Recipe = require("./routes/recipe");
 const Comment = require("./routes/comment");
 const swaggerDocs = require("./swagger.json");
@@ -48,7 +47,6 @@ app.get("/", (req, res) => {
   res.send("Está funcionando");
 });
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs, options));
-app.use("/api", uploadImage.routes);
 app.use("/users", User);
 app.use("/recipe", Recipe);
 app.use("/comment", Comment);

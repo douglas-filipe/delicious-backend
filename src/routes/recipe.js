@@ -7,7 +7,6 @@ const multer = require('../middlewares/uploadFotos')
 const firebase = require("../firebaseApp")
 require("firebase/compat/storage");
 const storage = firebase.storage().ref();
-global.XMLHttpRequest = require("xhr2");
 
 
 //Feito
