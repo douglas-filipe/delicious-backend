@@ -8,7 +8,7 @@ const recipeSchema = new mongoose.Schema(
     imgName: { type: String, required: true },
     category: { type: String, required: true },
     level: { type: String, required: true },
-    preparation: { type: Array, required: true },
+    preparation: { type: String, required: true },
     ingredients: { type: String, required: true },
     time: { type: String, required: true },
     author: {
@@ -18,8 +18,8 @@ const recipeSchema = new mongoose.Schema(
     },
     likes: {
       type: Array,
-      default: []
-    }
+      default: [],
+    },
   },
   { timestamps: true }
 );
